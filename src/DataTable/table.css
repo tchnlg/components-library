@@ -1,0 +1,38 @@
+/* .table-sort > span ~ .table-sort__icon,  
+.table-sort > span ~ .table-sort__icon-unsorted {
+  margin-left: 0.5rem;
+} */
+
+.table-sort__icon {
+  display: none;
+}
+
+.table-sort--active .table-sort__icon-unsorted {
+  display: none;
+}
+
+.table-sort--active .table-sort__icon {
+  display: block;
+  transform: rotate(0);
+  transition: transform 110ms cubic-bezier(.2,0,.38,.9);
+}
+
+.table-sort--active.table-sort--descending .table-sort__icon {
+  transform: rotate(180deg);
+}
+
+.table-header__button {
+  @apply border-none text-gray-500;
+}
+.table-header__button:hover {
+  @apply text-gray-900;
+}
+.table-header__button--active {
+  @apply text-gray-900;
+}
+.table-header__button--selected, .table-header__button--selected:hover {
+  @apply text-indigo-600;
+}
+
+
+
