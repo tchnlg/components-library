@@ -10,6 +10,8 @@ export default {
     error: false,
     errorText: "Input is not valid",
     disabled: false,
+    maxlength: 100,
+    showCharactersCount: false,
   },
 };
 

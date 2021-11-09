@@ -10,7 +10,10 @@
   export let icon = null;
   export let type = "text";
   export let value = "";
+  export let showCharactersCount = false;
+  export let maxCharactersCount = undefined;
   const id = "ccs-" + Math.random().toString(36);
+  let charactersCount = value.length;
 </script>
 
 <div>
@@ -30,7 +33,6 @@
     {/if}
 
     <input
-      {...$$restProps}
       class="block w-full text-sm border border-gray-300 rounded-md text-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
       class:pl-8={icon}
       value={value}
@@ -40,14 +42,34 @@
       placeholder={placeholder}
       disabled={disabled}
       required={required}
-      on:change
+      {...$$restProps}
+      on:input={({ target }) => {
+        charactersCount = target.value.length;
+      }}
       on:input
+      on:change
       on:click />
   </div>
-  {#if helperText}
-    <div class="text-sm text-gray-500 mt-1">{helperText}</div>
+
+  {#if showCharactersCount}
+    <p class="mt-1 text-sm text-gray-500">
+      <span
+        class:text-red-600={maxCharactersCount &&
+          charactersCount >= maxCharactersCount}>{charactersCount}</span>
+      {#if maxCharactersCount}
+        / {maxCharactersCount}
+      {/if}
+      characters
+    </p>
   {/if}
-  <div class="mt-1 text-sm text-red-600" class:hidden={!error}>{errorText}</div>
+
+  {#if helperText}
+    <div class="mt-1 text-sm text-gray-500">{helperText}</div>
+  {/if}
+
+  {#if error}
+    <p class="mt-1 text-sm text-red-600">{errorText}</p>
+  {/if}
 </div>
 
 <style>

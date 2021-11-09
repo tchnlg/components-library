@@ -9,6 +9,8 @@
   export let helperText = "";
   export let rows = 4;
   export let value = "";
+  export let showCharactersCount = false;
+  export let maxCharactersCount = undefined;
   const id = "ccs-" + Math.random().toString(36);
   $: errorId = `error-${id}`;
 </script>
@@ -26,7 +28,7 @@
     id={id}
     name={name}
     rows={rows}
-    value={value}
+    bind:value
     placeholder={placeholder}
     {...$$restProps}
     class="block w-full text-sm  border border-gray-300 rounded-md text-gray-900 h-auto transition duration-150 ease-in-out {$$restProps.class} placeholder-gray-500 focus:ring-indigo-500 focus:border-indigo-500"
@@ -37,12 +39,24 @@
     on:focus
     on:blur />
 
+  {#if showCharactersCount}
+    <p class="mt-1 text-sm text-gray-500">
+      <span
+        class:text-red-600={maxCharactersCount &&
+          value.length >= maxCharactersCount}>{value.length}</span>
+      {#if maxCharactersCount}
+        / {maxCharactersCount}
+      {/if}
+      characters
+    </p>
+  {/if}
+
   {#if !error && helperText}
-    <p class="mt-2 text-sm text-gray-500">{helperText}</p>
+    <p class="mt-1 text-sm text-gray-500">{helperText}</p>
   {/if}
 
   {#if error}
-    <p id={errorId} class="mt-2 text-sm text-red-600">{errorText}</p>
+    <p id={errorId} class="mt-1 text-sm text-red-600">{errorText}</p>
   {/if}
 </div>
 

@@ -9,8 +9,10 @@ export default {
     error: false,
     errorText: "Only plain text characters are allowed",
     disabled: false,
+    showCharactersCount: false,
     rows: 4,
     name: "",
+    maxlength: 100,
   },
 };
 
