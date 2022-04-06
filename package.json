@@ -1,6 +1,10 @@
 {
   "name": "@tchnlg/components-library",
+  "repository":"git://github.com/tchnlg/components-library.git",
   "version": "0.1.0",
+  "publishConfig": {
+  "registry":"https://npm.pkg.github.com"
+  },
   "description": "Svelte components library for CMS",
   "svelte": "./src/index.js",
   "main": "./lib/index.js",
