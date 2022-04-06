@@ -1,5 +1,5 @@
 {
-  "name": "components-library",
+  "name": "@tchnlg/components-library",
   "version": "0.1.0",
   "description": "Svelte components library for CMS",
   "svelte": "./src/index.js",
