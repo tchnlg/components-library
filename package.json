@@ -1,18 +1,13 @@
 {
   "name": "@tchnlg/components-library",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zdg/components-library.git"
-  },
-  "version": "0.2.0",
+  "version": "0.1.0",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+  "registry":"https://npm.pkg.github.com"
   },
   "description": "Svelte components library for CMS",
   "svelte": "./src/index.js",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
-  "private": true,
   "scripts": {
     "build": "build-storybook",
     "fix": "npx eslint --fix --cache './src/**/*.{svelte,js,md}'",
@@ -74,6 +69,10 @@
     "svelteSortOrder": "scripts-markup-styles",
     "svelteBracketNewLine": false,
     "svelteAllowShorthand": false
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zdg/components-library.git"
   },
   "homepage": "https://github.com/zdg/components-library",
   "bugs": "https://github.com/zdg/components-library/issues",
