@@ -72,10 +72,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zdg/components-library.git"
+    "url": "https://github.com/tchnlg/components-library.git"
   },
-  "homepage": "https://github.com/zdg/components-library",
-  "bugs": "https://github.com/zdg/components-library/issues",
+  "homepage": "https://github.com/tchnlg/components-library",
+  "bugs": "https://github.com/tchnlg/components-library/issues",
   "keywords": [
     "svelte",
     "component library",
