@@ -8,6 +8,7 @@
   "svelte": "./src/index.js",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
+  "svelte": "./src/index.js",
   "scripts": {
     "build": "build-storybook",
     "fix": "npx eslint --fix --cache './src/**/*.{svelte,js,md}'",
