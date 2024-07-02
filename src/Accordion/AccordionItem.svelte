@@ -28,7 +28,7 @@
     </div>
   </button>
   {#if open}
-    <div class="accordion__content" transition:slide={{ duration: 150 }}>
+    <div class="accordion__content" transition:slide|local={{ duration: 150 }}>
       <slot />
     </div>
   {/if}
