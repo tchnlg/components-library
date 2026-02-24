@@ -8,6 +8,7 @@
   export let errorText = "";
   export let selected = new Date();
   export let format = "#{m}/#{d}/#{Y}";
+  export let start = new Date(2000, 0, 1);
   export let end = new Date(2050, 0, 0);
 
   const id = "ccs-" + Math.random().toString(36);
@@ -30,6 +31,7 @@
     bind:formattedSelected
     bind:selected
     format={format}
+    start={start}
     end={end}
     highlightColor={highlightColor}
     {...$$restProps}>
