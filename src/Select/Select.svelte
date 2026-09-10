@@ -7,6 +7,7 @@
   import SelectionList from "./SelectionList.svelte";
   import SelectItems from "./SelectItems.svelte";
   export let labelText = "";
+  export let id = `select-${Math.random().toString(36).slice(2)}`;
   export let noOptionsMessage = "No options";
   export let placeholderText = "Select...";
   export let selected = []; // array of selected values
@@ -42,6 +43,7 @@
   let itemsStyle = "";
   let filterText = "";
   let filteredItems = [];
+  let activeIndex = -1;
   let extraOption = null;
   let inputAttributes = {
     type: "text",
@@ -98,6 +100,7 @@
     }
 
     filteredItems = _filteredItems;
+    activeIndex = -1;
   }
 
   function hideItems({ target }) {
@@ -109,13 +112,49 @@
   function showItems() {
     if (disabled) return;
     open = !open;
+    if (open) container?.querySelector("input")?.focus();
     open && setListPositon();
+  }
+
+  async function navigate(event) {
+    if (disabled) return;
+    if (event.key === "Escape" || event.key === "Tab") {
+      open = false;
+      filterText = "";
+      return;
+    }
+    if (["ArrowDown", "ArrowUp"].includes(event.key)) {
+      event.preventDefault();
+      if (!open) {
+        open = true;
+        setListPositon();
+      }
+      const count = filteredItems.length;
+      if (!count) return;
+      activeIndex =
+        activeIndex < 0
+          ? event.key === "ArrowDown"
+            ? 0
+            : count - 1
+          : (activeIndex + (event.key === "ArrowDown" ? 1 : -1) + count) %
+            count;
+      await tick();
+      container
+        ?.querySelector(`[data-option-index="${activeIndex}"]`)
+        ?.scrollIntoView?.({ block: "nearest" });
+    } else if (event.key === "Enter" && open) {
+      event.preventDefault();
+      const item = filteredItems[activeIndex];
+      if (item) handleItemClick({ detail: { item } });
+    }
   }
 
   function handleItemClick({ detail }) {
     const { item } = detail;
 
     if ($selectedItems.includes(item)) {
+      open = false;
+      filterText = "";
       return;
     }
 
@@ -155,6 +194,8 @@
   async function setListPositon() {
     await tick();
 
+    if (!container) return;
+
     const { height, bottom } = container.getBoundingClientRect();
     const isOutOfView =
       bottom + 100 >
@@ -173,7 +214,7 @@
 <div class="select-wrapper" class:inline>
   {#if labelText}
     <label
-      for="listbox-label"
+      for={id}
       class="block text-sm font-medium leading-5 text-gray-700"
       class:mb-1={!inline}
       class:mr-2={inline}>{labelText}</label>
@@ -199,19 +240,39 @@
 
     <input
       {...inputAttributes}
+      {...$$restProps}
+      id={id}
+      role="combobox"
+      aria-expanded={open}
+      aria-controls={`${id}-options`}
+      aria-autocomplete={isSearchable ? "list" : "none"}
+      aria-activedescendant={open && activeIndex >= 0
+        ? `${id}-options-${activeIndex}`
+        : undefined}
       class="absolute inset-x-0 w-full border-none pl-3 pr-10 flex items-center text-left text-sm leading-5 bg-transparent focus:ring-0 focus:outline-none placeholder-gray-500 focus:placeholder-gray-400"
       bind:value={filterText}
-      on:input={() => (open = true)}
+      on:keydown={navigate}
+      on:input={() => {
+        open = true;
+        setListPositon();
+      }}
+      on:blur={() => {
+        open = false;
+        filterText = "";
+      }}
       on:change
       disabled={disabled}
       placeholder={placeholder} />
 
-    <div class="absolute right-0 pr-2 flex items-center text-gray-400">
+    <div
+      class="absolute right-0 pr-2 flex items-center text-gray-400 pointer-events-none">
       <CaretDown20 />
     </div>
 
     {#if isClearable && !filterText && $selectedItems.length}
       <button
+        type="button"
+        aria-label="Clear selection"
         class="absolute right-0 mr-6 flex items-center text-gray-400 hover:text-gray-600"
         on:click|stopPropagation={handleClear}>
         <Close20 />
@@ -219,13 +280,15 @@
     {/if}
 
     {#if !isMultiple && !filterText && $selectedItems.length}
-      <div class="pr-2 text-sm">
+      <div class="min-w-0 w-full pr-2 text-sm pointer-events-none">
         <div class="truncate">{$selectedItems[0].text}</div>
       </div>
     {/if}
 
     {#if open}
       <SelectItems
+        id={`${id}-options`}
+        activeIndex={activeIndex}
         on:itemClick={handleItemClick}
         style={itemsStyle}
         items={filteredItems}
@@ -254,7 +317,11 @@
   } */
 
   .select-wrapper {
-    @apply flex flex-col justify-start;
+    @apply flex flex-col justify-start min-w-0;
+  }
+
+  .select-input:focus-within {
+    @apply border-indigo-500 ring-1 ring-indigo-500;
   }
 
   .select-wrapper.inline {

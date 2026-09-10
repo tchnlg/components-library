@@ -77,3 +77,25 @@ export const WithTags = Template.bind({});
 WithTags.args = {
   isTagged: true,
 };
+
+export const WithDescriptions = Template.bind({});
+WithDescriptions.args = {
+  labelText: "Feed column",
+  isSearchable: true,
+  selected: ["name"],
+  items: [
+    {
+      value: "name",
+      text: "Product name",
+      description: "Example: Herbal tea, 100 g",
+    },
+    { value: "price", text: "Price", description: "Example: 12.90 EUR" },
+    {
+      value: "description",
+      text: "Product description",
+      description:
+        "Example: " +
+        "A long description that must not widen the dropdown. ".repeat(12),
+    },
+  ],
+};
