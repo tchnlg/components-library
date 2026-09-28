@@ -18,9 +18,13 @@
   }
 </script>
 
+<!-- Keep scrollbar interaction inside the popup. Keyboard navigation stays on the combobox. -->
+<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
 <div
   class="absolute inset-x-0 rounded-md shadow-lg bg-white z-50"
   in:slide={{ duration: 150 }}
+  on:mousedown|capture|preventDefault
+  on:click|stopPropagation
   style={style}>
   <div
     id={id}
@@ -32,7 +36,6 @@
         type="button"
         tabindex="-1"
         class="block w-full text-left text-gray-900 py-2 pl-3 pr-9"
-        on:mousedown|preventDefault
         on:click|stopPropagation={() => handleItemClick(extraOption)}>
         {extraOption.text || extraOption.value}
       </button>
@@ -49,7 +52,6 @@
         class="group listbox-option block w-full min-w-0 text-left text-gray-900 cursor-pointer select-none relative py-2 pl-3 pr-9 hover:text-white hover:bg-indigo-600"
         class:active={$selectedItems.includes(item)}
         class:highlighted={activeIndex === i}
-        on:mousedown|preventDefault
         on:click|stopPropagation={() => handleItemClick(item)}>
         <span class="block truncate"> {item.text || item.value} </span>
         {#if item.description}
