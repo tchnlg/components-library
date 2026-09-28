@@ -73,6 +73,17 @@ Searchable.args = {
   isSearchable: true,
 };
 
+export const Scrollable = Template.bind({});
+Scrollable.args = {
+  labelText: "Source",
+  isSearchable: true,
+  items: Array.from({ length: 24 }, (_, index) => ({
+    value: `source-${index + 1}`,
+    text: `Source ${index + 1}`,
+    description: `${index + 1} eligible matches`,
+  })),
+};
+
 export const WithTags = Template.bind({});
 WithTags.args = {
   isTagged: true,
